@@ -1,5 +1,26 @@
 #include <stdio.h>
 
+#define UNUSED(x) x
+
+int puts(const char *str)
+{
+    UNUSED(str);
+    return 0;
+}
+
+int putc(int str, FILE *stream)
+{
+    UNUSED(str);
+    UNUSED(stream);
+    return 0;
+}
+
+int putchar(int str)
+{
+    UNUSED(str);
+    return 0;
+}
+
 // Declare the assembly function prototype
 extern void calculate_fibonacci(int n, int* result);
 
@@ -9,9 +30,6 @@ int main() {
     
     // Call the assembly function using the GRV
     calculate_fibonacci(n, &result);
-    
-    // Print the result
-    printf("F(%d) = %d\n", n, result);
     
     return 0;
 }
