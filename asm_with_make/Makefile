@@ -1,6 +1,6 @@
 # Compiler settings
-CC = arm-gcc
-AS = arm-as
+CC = arm-none-eabi-gcc
+AS = arm-none-eabi-as
 CFLAGS = -Wall -Wextra -g -I include
 
 # Source and object files
