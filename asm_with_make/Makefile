@@ -12,6 +12,9 @@ TARGET = bin/my_program
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^
 
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.s
+	$(CC) $(CFLAGS) -c $< -o $@
+
 # Dependency generation
 DEPS := $(OBJS:.o=.d)
 -include $(DEPS)
