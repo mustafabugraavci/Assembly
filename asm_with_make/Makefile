@@ -3,38 +3,37 @@ CC = arm-none-eabi-gcc
 AS = arm-none-eabi-as
 
 # Source files directory
-SRC_DIR = src
+SRC_C = $(wildcard src/*.c)
+SRC_ASM = $(wildcard src/*.s)
 
 # Output directory
 BUILD_DIR = build
 
-# List of assembly source files
-SRC_FILES = $(wildcard $(SRC_DIR)/*.s)
 
 # Object files derived from source files
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.s,$(BUILD_DIR)/%.o,$(SRC_FILES))
+OBJ_C = $(SRC_C:.c=.o)
+OBJ_ASM = $(SRC_ASM:.s=.o)
+OBJ = $(OBJ_C) $(OBJ_ASM)
 
 # Name of the final executable
-TARGET = my_program
+TARGET = my_arm_program.elf
 
 # Compiler flags
-CFLAGS = -g -Wall
+CFLAGS = -mcpu=cortex-m4 -mthumb -Wall -I./include
 
-# Linker flags (if needed)
-LDFLAGS =
+# Build rule
+all: $(TARGET)
 
-# Rule to compile assembly source files into object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.s
-	$(CC) $(CFLAGS) -c $< -o $@
+$(TARGET): $(OBJ)
+	$(LD) -T linker_script.ld -o $@ $^
 
-# Rule to link object files into the final executable
-$(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
-	$(CC) $(LDFLAGS) $^ -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-# Default target: build the executable
-all: $(BUILD_DIR)/$(TARGET)
+%.o: %.s
+	$(AS) -o $@ $<
 
-# Clean up object files and the executable
 clean:
-	rm -f $(BUILD_DIR)/*.o $(BUILD_DIR)/$(TARGET)
-	
+	rm -f $(OBJ) $(TARGET)
+
+.PHONY: all clean
