@@ -1,6 +1,7 @@
 # Define the cross-compiler
 CC = arm-none-eabi-gcc
 AS = arm-none-eabi-as
+LD = arm-none-eabi-ld
 
 # Source files directory
 SRC_C = $(wildcard src/*.c)
@@ -16,7 +17,7 @@ OBJ_ASM = $(SRC_ASM:.s=.o)
 OBJ = $(OBJ_C) $(OBJ_ASM)
 
 # Name of the final executable
-TARGET = my_arm_program.elf
+TARGET = build/my_arm_program.elf
 
 # Compiler flags
 CFLAGS = -mcpu=cortex-m4 -mthumb -Wall -I./include
